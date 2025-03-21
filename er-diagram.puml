@@ -3,76 +3,76 @@
 !define foreign_key(x) <u>x</u>
 
 entity "User" as User {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    name : string
-    email : string
-    password : string
-    role : string
-    createdatetime : datetime
-    updatedatetime : datetime
+    *name : string
+    *email : string
+    *password : string
+    *role : string
+    *createdatetime : datetime
+    *updatedatetime : datetime
 }
 
 entity "System" as System {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    address : string
-    title : string
-    description : string
-    type : string
-    user_id : UUID [FK к User]
-    createdatetime : datetime
-    updatedatetime : datetime
+    +address : string
+    *title : string
+    +description : string
+    *type : string
+    *user_id : UUID [FK к User]
+    *createdatetime : datetime
+    *updatedatetime : datetime
 }
 
 entity "Device" as Device {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    serial_number : string
-    description : string
-    status : string
-    type_id : UUID [FK к DeviceType]
-    house_id : UUID [FK к System]
-    createdatetime : datetime
-    updatedatetime : datetime
+    *serial_number : string
+    +description : string
+    +status : string
+    *type_id : UUID [FK к DeviceType]
+    *house_id : UUID [FK к System]
+    *createdatetime : datetime
+    *updatedatetime : datetime
 }
 
 entity "DeviceType" as DeviceType {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    name : string
-    description : string
-    createdatetime : datetime
-    updatedatetime : datetime
+    *name : string
+    +description : string
+    *createdatetime : datetime
+    *updatedatetime : datetime
 }
 
 entity "SensorData" as SensorData {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    device_id : UUID [FK к Device]
-    timestamp : datetime
-    data : object
+    *device_id : UUID [FK к Device]
+    *timestamp : datetime
+    *data : object
 }
 
 entity "Scenario" as Scenario {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    name : string
-    description : string
-    user_id : UUID [FK к User]
-    scenario_data : object
-    createdatetime : datetime
-    updatedatetime : datetime
+    *name : string
+    +description : string
+    *user_id : UUID [FK к User]
+    +scenario_data : object
+    *createdatetime : datetime
+    *updatedatetime : datetime
 }
 
 entity "Notification" as Notification {
-    primary_key(id) : UUID
+    *primary_key(id) : UUID
     --
-    user_id : UUID [FK к User]
-    type : string
-    message : string
-    status : boolean
-    createdatetime : datetime
+    *user_id : UUID [FK к User]
+    *type : string
+    *message : string
+    *status : boolean
+    *createdatetime : datetime
 }
 
 User ||--o{ System : "owns"
@@ -81,4 +81,5 @@ Device ||--o{ SensorData : "produces"
 User ||--o{ Scenario : "creates"
 User ||--o{ Notification : "receives"
 Device ||--|{ DeviceType : "has type"
+Scenario ||--o{ Device : "contains"
 @enduml
